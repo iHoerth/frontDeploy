@@ -12,7 +12,8 @@ const URL_PATIENTS = `http://localhost:3001/patients`;
 const URL_DOCTORS = `http://localhost:3001/doctors`;
 const URL_SPECIALTIES = `http://localhost:3001/specialties`;
 const URL_SOCIALSECURITY = `http://localhost:3001/socialSecurity`;
-const URL_PERFILMEDICO= `http://localhost:3001/perfilMedico`
+const URL_PERFILMEDICO = `http://localhost:3001/perfilMedico`;
+const URL_TURNOS = `http://localhost:3001/appointments`;
 
 const ContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
@@ -134,7 +135,7 @@ const ContextProvider = ({ children }) => {
       }
     },
     loginPatient: async (loginData) => {
-      console.log(loginData)
+      console.log(loginData);
       try {
         const sessionData = (await axios.post(`${URL_PATIENTS}/login`, loginData)).data;
         console.log(loginData.email, `*** CONTEXT ***`);
@@ -164,10 +165,10 @@ const ContextProvider = ({ children }) => {
 
   const [panelMedico, setPanelMedico] = useState({
     pacientes: [],
-    pacienteHistorial: [],
-    view: 0,
+    pacienteHistorial: {},
+    turnos: [],
+    vista: 0,
 
-    
     fetchPacientes: async (id) => {
       const pacientesData = (await axios(`${URL_PERFILMEDICO}/${id}/pacientes`)).data;
       setPanelMedico((prevState) => ({
@@ -175,30 +176,53 @@ const ContextProvider = ({ children }) => {
         pacientes: [...pacientesData],
       }));
     },
-    fetchPacienteHistorial: async (idMedico,idPaciente) => {
-      const pacienteHistorialData = (await axios(`${URL_PERFILMEDICO}/${idMedico}/pacientes/${idPaciente}`)).data;
+    fetchPacienteHistorial: async (idMedico, idPaciente) => {
+      const pacienteHistorialData = (
+        await axios(`${URL_PERFILMEDICO}/${idMedico}/pacientes/${idPaciente}`)
+      ).data;
       setPanelMedico((prevState) => ({
         ...prevState,
-        pacienteHistorial: [...pacienteHistorialData],
+        pacienteHistorial: pacienteHistorialData,
       }));
     },
-    setView: (view) =>{
+    fetchTurnos: async (id) => {
+      const turnosData = (await axios(`${URL_TURNOS}/doctor/${id}`)).data;
       setPanelMedico((prevState) => ({
         ...prevState,
-        view: view,
+        turnos: turnosData,
       }));
-    }
-
+    },
+    setVista: (vista) => {
+      setPanelMedico((prevState) => ({
+        ...prevState,
+        vista: vista,
+      }));
+    },
   });
 
+  const [appointment, setAppointment] = useState({
+    appointmentId: 0,
+    doctorId: 0,
+    patientId: 0,
+    fecha: '',
+    hora: '',
+    description: '',
+    pagado: false,
+    createAppointment: async () => {},
 
+    fetchAppointmentById: async () => {},
+
+    setPayedToTrue: async () => {},
+  });
 
   return (
     <>
       <LoadingContext.Provider value={[loading, setLoading]}>
         <UtilitiesContext.Provider value={utilities}>
           <FilterContext.Provider value={[selectedFilters, setSelectedFilters]}>
-            <Context.Provider value={[doctorsData, patientsData, { session, setSession }, panelMedico]}>
+            <Context.Provider
+              value={[doctorsData, patientsData, { session, setSession }, panelMedico, appointment]}
+            >
               {children}
             </Context.Provider>
           </FilterContext.Provider>
