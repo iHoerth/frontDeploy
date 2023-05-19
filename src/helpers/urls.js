@@ -1,0 +1,8 @@
+export const URL_PATIENTS = 'https://apideploy-production.up.railway.app/patients'
+export const URL_DOCTORS = 'https://apideploy-production.up.railway.app/doctors'
+export const URL_SPECIALTIES = 'https://apideploy-production.up.railway.app/specialties'
+export const URL_SOCIALSECURITY = 'https://apideploy-production.up.railway.app/socialSecurity'
+export const URL_PERFILMEDICO= 'https://apideploy-production.up.railway.app/perfilMedico'
+export const URL_MAIL= 'https://apideploy-production.up.railway.app/mail'
+export const URL_POSTAGENDA = 'httpss://apideploy-production.up.railway.app/horarios/bulk'
+export const URL_TURNOS = 'https://apideploy-production.up.railway.app/turno'

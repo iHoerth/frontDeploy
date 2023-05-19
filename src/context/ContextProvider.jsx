@@ -1,6 +1,14 @@
 import { createContext, useState } from 'react';
 import axios from 'axios';
 import useLocalStorage from '../helpers/useLocalStorage';
+import {
+  URL_PATIENTS,
+  URL_DOCTORS,
+  URL_SPECIALTIES,
+  URL_SOCIALSECURITY,
+  URL_PERFILMEDICO,
+  URL_TURNOS,
+} from '../helpers/urls';
 
 export const Context = createContext([]);
 export const UtilitiesContext = createContext([]);
@@ -8,12 +16,9 @@ export const LoadingContext = createContext([]);
 export const FilterContext = createContext([]);
 export const SessionContext = createContext([]);
 
-const URL_PATIENTS = process.env.URL_PATIENTS
-const URL_DOCTORS = process.env.URL_DOCTORS
-const URL_SPECIALTIES = process.env.URL_SPECIALTIES
-const URL_SOCIALSECURITY = process.env.URL_SOCIALSECURITY
-const URL_PERFILMEDICO = process.env.URL_PERFILMEDICO
-const URL_TURNOS = process.env.URL_TURNOS
+
+
+console.log(URL_PATIENTS, 'AJSHDJASHDJASHDJASHDJASHJDHSAJDASJHDGASGDJHSGDJHASGD');
 
 const ContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
