@@ -8,12 +8,12 @@ export const LoadingContext = createContext([]);
 export const FilterContext = createContext([]);
 export const SessionContext = createContext([]);
 
-const URL_PATIENTS = `http://localhost:3001/patients`;
-const URL_DOCTORS = `http://localhost:3001/doctors`;
-const URL_SPECIALTIES = `http://localhost:3001/specialties`;
-const URL_SOCIALSECURITY = `http://localhost:3001/socialSecurity`;
-const URL_PERFILMEDICO = `http://localhost:3001/perfilMedico`;
-const URL_TURNOS = `http://localhost:3001/appointments`;
+const URL_PATIENTS = process.env.URL_PATIENTS
+const URL_DOCTORS = process.env.URL_DOCTORS
+const URL_SPECIALTIES = process.env.URL_SPECIALTIES
+const URL_SOCIALSECURITY = process.env.URL_SOCIALSECURITY
+const URL_PERFILMEDICO = process.env.URL_PERFILMEDICO
+const URL_TURNOS = process.env.URL_TURNOS
 
 const ContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
