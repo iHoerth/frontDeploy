@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const URL_MAIL = process.env.URL_MAIL
+import { URL_MAIL } from "../../helpers/urls";
 
 export const sendMail = (data) => {
   return axios

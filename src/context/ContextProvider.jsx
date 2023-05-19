@@ -8,7 +8,7 @@ import {
   URL_SOCIALSECURITY,
   URL_PERFILMEDICO,
   URL_TURNOS,
-} from '../helpers/urls';
+} from '../helpers/urls'
 
 export const Context = createContext([]);
 export const UtilitiesContext = createContext([]);

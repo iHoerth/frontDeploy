@@ -15,10 +15,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Typography } from '@mui/material';
 import {Button} from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
-
+import { URL_POSTAGENDA } from '../../helpers/urls';
 import axios from "axios";
 
-const URL_POSTAGENDA = process.env.URL_POSTAGENDA
 
 
 const ConfigAgenda = ({doctorDetail}) => {
