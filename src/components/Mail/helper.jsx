@@ -1,5 +1,6 @@
 import axios from "axios";
-import { URL_MAIL } from "../../helpers/urls";
+
+const URL_MAIL = process.env.REACT_APP_URL_MAIL;
 
 export const sendMail = (data) => {
   return axios

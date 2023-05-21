@@ -1,14 +1,6 @@
 import { createContext, useState } from 'react';
 import axios from 'axios';
 import useLocalStorage from '../helpers/useLocalStorage';
-import {
-  URL_PATIENTS,
-  URL_DOCTORS,
-  URL_SPECIALTIES,
-  URL_SOCIALSECURITY,
-  URL_PERFILMEDICO,
-  URL_TURNOS,
-} from '../helpers/urls'
 
 export const Context = createContext([]);
 export const UtilitiesContext = createContext([]);
@@ -16,9 +8,16 @@ export const LoadingContext = createContext([]);
 export const FilterContext = createContext([]);
 export const SessionContext = createContext([]);
 
+const URL_PATIENTS = `http://localhost:3001/patients`;
+const URL_DOCTORS = `http://localhost:3001/doctors`;
+const URL_SPECIALTIES = `http://localhost:3001/specialties`;
+const URL_SOCIALSECURITY = `http://localhost:3001/socialSecurity`;
+const URL_PERFILMEDICO = `http://localhost:3001/perfilMedico`;
+const URL_TURNOS = `http://localhost:3001/appointments`;
+const URL_PERFILPACIENTE = `http://localhost:3001/perfilPaciente`;
 
 
-console.log(URL_PATIENTS, 'AJSHDJASHDJASHDJASHDJASHJDHSAJDASJHDGASGDJHSGDJHASGD');
+
 
 const ContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
@@ -59,12 +58,12 @@ const ContextProvider = ({ children }) => {
     },
     fetchDoctorByEmail: async (email) => {
       const data = (await axios(`${URL_DOCTORS}?email=${email}`)).data;
-      console.log(data);
+      //console.log(data);
       setDoctorsData((prevState) => ({
         ...prevState,
         doctorDetail: { ...data },
       }));
-      console.log({ ...data });
+      //console.log({ ...data });
       return { ...data };
     },
     cleanDetail: async () => {
@@ -99,6 +98,14 @@ const ContextProvider = ({ children }) => {
         console.log(error.message, 'TRY CATCH CONTEXT');
       }
     },
+    putDoctor: async (doctorNewDetails) =>{
+      console.log(doctorNewDetails);
+      const data = await axios.put(`${URL_DOCTORS}/edit`, doctorNewDetails).data
+      setDoctorsData((prevState) => ({
+        ...prevState,
+        doctorDetail: { ...data },
+      }));
+    }
   });
 
   const [patientsData, setPatientsData] = useState({
@@ -135,6 +142,13 @@ const ContextProvider = ({ children }) => {
           ...prevState,
           patientDetail: { ...data },
         }));
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    postAppointment: async (datosTurno) => {
+      try {
+        await axios.post(`${URL_TURNOS}`, datosTurno)
       } catch (error) {
         console.log(error);
       }
@@ -187,7 +201,7 @@ const ContextProvider = ({ children }) => {
       ).data;
       setPanelMedico((prevState) => ({
         ...prevState,
-        pacienteHistorial: pacienteHistorialData,
+        pacienteHistorial: {...pacienteHistorialData},
       }));
     },
     fetchTurnos: async (id) => {
@@ -203,6 +217,13 @@ const ContextProvider = ({ children }) => {
         vista: vista,
       }));
     },
+    postDocumentosCita: async (idCita,files64,idMedico, idPaciente, titulo) => {
+      (await axios.post(`${URL_PERFILMEDICO}/doctor/cita/documento`,{idCita,files64,idMedico, idPaciente, titulo}));
+    },
+    postRespuestaCita: async (idCita, respuesta) =>{
+      console.log(idCita,respuesta);
+      (await axios.post(`${URL_PERFILMEDICO}/doctor/cita/respuesta`,{idCita, respuesta}));
+    }
   });
 
   const [appointment, setAppointment] = useState({
@@ -220,13 +241,27 @@ const ContextProvider = ({ children }) => {
     setPayedToTrue: async () => {},
   });
 
+  const [panelPaciente, setPanelPaciente] = useState({
+    informacion: [],
+
+    fetchPatientData: async (id) => {
+
+      const pacientesData = (await axios(`${URL_PERFILPACIENTE}/${id}/doctors`)).data;
+      setPanelPaciente((prevState) => ({
+        ...prevState,
+        informacion: [...pacientesData],
+      }));
+    },
+    
+  });
+
   return (
     <>
       <LoadingContext.Provider value={[loading, setLoading]}>
         <UtilitiesContext.Provider value={utilities}>
           <FilterContext.Provider value={[selectedFilters, setSelectedFilters]}>
             <Context.Provider
-              value={[doctorsData, patientsData, { session, setSession }, panelMedico, appointment]}
+              value={[doctorsData, patientsData, { session, setSession }, panelMedico, appointment, panelPaciente]}
             >
               {children}
             </Context.Provider>
