@@ -16,6 +16,8 @@ const URL_PERFILMEDICO = process.env.REACT_APP_URL_PERFILMEDICO;
 const URL_TURNOS = process.env.REACT_APP_URL_TURNOS;
 const URL_PERFILPACIENTE = process.env.REACT_APP_URL_PERFILPACIENTE;
 
+console.log(URL_DOCTORS);
+
 const ContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
 
