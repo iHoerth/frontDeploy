@@ -8,16 +8,13 @@ export const LoadingContext = createContext([]);
 export const FilterContext = createContext([]);
 export const SessionContext = createContext([]);
 
-const URL_PATIENTS = process.env.REACT_APP_URL_PATIENTS
-const URL_DOCTORS = process.env.REACT_APP_URL_DOCTORS
-const URL_SPECIALTIES = process.env.REACT_APP_URL_SPECIALTIES 
-const URL_SOCIALSECURITY = process.env.REACT_APP_URL_SOCIALSECURITY
-const URL_PERFILMEDICO = process.env.REACT_APP_URL_PERFILMEDICO
-const URL_TURNOS = process.env.REACT_APP_URL_TURNOS
-const URL_PERFILPACIENTE = process.env.REACT_APP_URL_PERFILPACIENTE
-
-
-
+const URL_PATIENTS = process.env.REACT_APP_URL_PATIENTS;
+const URL_DOCTORS = process.env.REACT_APP_URL_DOCTORS;
+const URL_SPECIALTIES = process.env.REACT_APP_URL_SPECIALTIES;
+const URL_SOCIALSECURITY = process.env.REACT_APP_URL_SOCIALSECURITY;
+const URL_PERFILMEDICO = process.env.REACT_APP_URL_PERFILMEDICO;
+const URL_TURNOS = process.env.REACT_APP_URL_TURNOS;
+const URL_PERFILPACIENTE = process.env.REACT_APP_URL_PERFILPACIENTE;
 
 const ContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
@@ -98,14 +95,14 @@ const ContextProvider = ({ children }) => {
         console.log(error.message, 'TRY CATCH CONTEXT');
       }
     },
-    putDoctor: async (doctorNewDetails) =>{
+    putDoctor: async (doctorNewDetails) => {
       console.log(doctorNewDetails);
-      const data = await axios.put(`${URL_DOCTORS}/edit`, doctorNewDetails).data
+      const data = await axios.put(`${URL_DOCTORS}/edit`, doctorNewDetails).data;
       setDoctorsData((prevState) => ({
         ...prevState,
         doctorDetail: { ...data },
       }));
-    }
+    },
   });
 
   const [patientsData, setPatientsData] = useState({
@@ -148,7 +145,7 @@ const ContextProvider = ({ children }) => {
     },
     postAppointment: async (datosTurno) => {
       try {
-        await axios.post(`${URL_TURNOS}`, datosTurno)
+        await axios.post(`${URL_TURNOS}`, datosTurno);
       } catch (error) {
         console.log(error);
       }
@@ -201,7 +198,7 @@ const ContextProvider = ({ children }) => {
       ).data;
       setPanelMedico((prevState) => ({
         ...prevState,
-        pacienteHistorial: {...pacienteHistorialData},
+        pacienteHistorial: { ...pacienteHistorialData },
       }));
     },
     fetchTurnos: async (id) => {
@@ -217,13 +214,19 @@ const ContextProvider = ({ children }) => {
         vista: vista,
       }));
     },
-    postDocumentosCita: async (idCita,files64,idMedico, idPaciente, titulo) => {
-      (await axios.post(`${URL_PERFILMEDICO}/doctor/cita/documento`,{idCita,files64,idMedico, idPaciente, titulo}));
+    postDocumentosCita: async (idCita, files64, idMedico, idPaciente, titulo) => {
+      await axios.post(`${URL_PERFILMEDICO}/doctor/cita/documento`, {
+        idCita,
+        files64,
+        idMedico,
+        idPaciente,
+        titulo,
+      });
     },
-    postRespuestaCita: async (idCita, respuesta) =>{
-      console.log(idCita,respuesta);
-      (await axios.post(`${URL_PERFILMEDICO}/doctor/cita/respuesta`,{idCita, respuesta}));
-    }
+    postRespuestaCita: async (idCita, respuesta) => {
+      console.log(idCita, respuesta);
+      await axios.post(`${URL_PERFILMEDICO}/doctor/cita/respuesta`, { idCita, respuesta });
+    },
   });
 
   const [appointment, setAppointment] = useState({
@@ -245,14 +248,12 @@ const ContextProvider = ({ children }) => {
     informacion: [],
 
     fetchPatientData: async (id) => {
-
       const pacientesData = (await axios(`${URL_PERFILPACIENTE}/${id}/doctors`)).data;
       setPanelPaciente((prevState) => ({
         ...prevState,
         informacion: [...pacientesData],
       }));
     },
-    
   });
 
   return (
@@ -261,7 +262,14 @@ const ContextProvider = ({ children }) => {
         <UtilitiesContext.Provider value={utilities}>
           <FilterContext.Provider value={[selectedFilters, setSelectedFilters]}>
             <Context.Provider
-              value={[doctorsData, patientsData, { session, setSession }, panelMedico, appointment, panelPaciente]}
+              value={[
+                doctorsData,
+                patientsData,
+                { session, setSession },
+                panelMedico,
+                appointment,
+                panelPaciente,
+              ]}
             >
               {children}
             </Context.Provider>
